@@ -1,0 +1,15 @@
+# Seleciona as colunas desejadas e trata dados de data
+df_cleansed = df_dados.select(
+    F.col("codigoTarefa"),
+    F.col("tituloTarefa"),
+    F.col("status"),
+    F.col("projeto"),
+    F.col("tipoCard"),
+    F.to_timestamp("dataCriacao", "yyyy-MM-dd'T'HH:mm:ss.SSSZ").alias("dataCriacao"),
+    F.col("responsavel")
+)
+
+# Filtra os dados para remover tarefas canceladas
+df_cleansed = df_cleansed.filter(df_cleansed["status"] != "Cancelado")
+
+df_cleansed.write.mode("overwrite").parquet("/mnt/datalake/jira/trusted/")
