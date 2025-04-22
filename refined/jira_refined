@@ -1,0 +1,7 @@
+# Realiza a agregação e contagem de tarefas por responsável
+df_gold = df_cleansed.groupBy("responsavel").agg(
+    F.count("*").alias("qtd_tarefas"),
+    F.max("dataCriacao").alias("ultima_criacao")
+)
+
+df_gold.write.mode("overwrite").parquet("/mnt/datalake/jira/refined/")
